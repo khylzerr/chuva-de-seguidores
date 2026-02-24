@@ -1,0 +1,625 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chuva de Seguidores</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#06152b,#0d2d63,#06152b);
+  color:white;
+  overflow-x:hidden;
+}
+
+header{
+  text-align:center;
+  padding:90px 20px;
+  position:relative;
+  z-index:2;
+  animation:fadeDown 1.2s ease;
+}
+
+@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+h1{
+  font-size:clamp(30px,6vw,60px);
+  margin:0 auto;
+  text-align:center;
+  width:100%;
+  text-shadow:0 0 20px #5bbcff;
+}
+
+.tag{opacity:.85;margin-top:10px;text-align:center;}
+
+.btn{
+  margin-top:25px;
+  display:inline-block;
+  padding:16px 38px;
+  border-radius:50px;
+  background:linear-gradient(45deg,#6ec6ff,#1e88e5);
+  color:white;
+  font-weight:bold;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 18px #4fc3f7;
+  transition:.3s;
+}
+
+.btn:hover{transform:scale(1.06)}
+
+.btn::after{
+  content:"";
+  position:absolute;
+  width:0;
+  height:0;
+  background:rgba(255,255,255,0.4);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  top:50%;left:50%;
+  transition:.6s;
+}
+
+.btn:active::after{
+  width:300px;
+  height:300px;
+  opacity:0;
+}
+
+section{
+  padding:60px 20px;
+  max-width:1000px;
+  margin:auto;
+  position:relative;
+  z-index:2;
+}
+
+.card{
+  background:rgba(255,255,255,0.07);
+  border-radius:25px;
+  padding:30px;
+  margin:25px 0;
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 25px rgba(0,0,0,0.3);
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s;
+}
+
+.card.show{opacity:1;transform:translateY(0)}
+
+h2{color:#8ed0ff;margin-top:0}
+
+.faq-item{margin:12px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+
+.faq-q{
+  cursor:pointer;
+  padding:10px;
+  font-weight:bold;
+}
+
+.faq-a{
+  max-height:0;
+  overflow:hidden;
+  transition:.4s;
+  padding:0 0;
+  opacity:.8;
+}
+
+.faq-item.active .faq-a{
+  max-height:500px;
+  padding:0;
+  overflow-y:auto;
+}
+
+.faq-a p{margin:5px 0;}
+
+.faq-a::-webkit-scrollbar{
+  width:6px;
+}
+.faq-a::-webkit-scrollbar-thumb{
+  background:#6ec6ff;
+  border-radius:10px;
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+
+.gallery img{
+  width:100%;
+  border-radius:15px;
+  transition:.4s;
+  cursor:pointer;
+}
+
+.gallery img:hover{transform:scale(1.07)}
+
+footer{
+  text-align:center;
+  padding:40px;
+  opacity:.6;
+  position:relative;
+  z-index:2;
+}
+
+#lightbox{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+}
+
+#lightbox img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:15px;
+  box-shadow:0 0 20px #000;
+  animation:fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+.rain{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  pointer-events:none;
+  z-index:1;
+}
+
+.drop{
+  position:absolute;
+  bottom:100%;
+  width:2px;
+  height:18px;
+  background:rgba(255,255,255,0.5);
+  animation:fall linear infinite;
+}
+
+@keyframes fall{to{transform:translateY(120vh)}}
+
+.flash{
+  position:fixed;
+  inset:0;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+  z-index:5;
+}
+
+.toggle-sound{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:3;
+  background:#1e88e5;
+  border:none;
+  color:white;
+  padding:14px 20px;
+  border-radius:40px;
+  cursor:pointer;
+  font-weight:bold;
+  box-shadow:0 0 15px #64b5f6;
+}
+
+.toggle-sound:hover{transform:scale(1.08)}
+</style>
+</head>
+
+<body>
+
+<div class="rain" id="rain"></div>
+<div class="flash" id="flash"></div>
+
+<header>
+<h1>☔ Chuva de Seguidores ☔</h1>
+<p class="tag">Transformamos seu perfil em referência, com crescimento acelerado e engajamento de verdade.</p>
+<a href="https://www.instagram.com/channel/AbbXOg5qu_FnroUY/?igsh=MWlrMWd1Z25ubWl4MQ==" target="_blank" class="btn">
+Entrar no Canal
+</a>
+</header>
+
+<section>
+<div class="card">
+<h2>O que é o canal Chuva de Seguidores?</h2>
+<p>O canal Chuvas de Seguidores (CDS) vem com o objetivo orgânico e simplificado para aumento do seu engajamento, utilizando de dinâmicas de fáceis entendimentos para um desenvolvimento controlado, com metas impostas de curto, médio e grande prazo.</p>
+<p>Temos como função ajudar todos aqueles envolvidos no RPG, para conquistar sua conta dos sonhos, com uma grande quantidade de público ao aumentar seguidores ativos.</p>
+</div>
+
+<div class="card">
+<h2>Objetivo do site</h2>
+<p>Pensando em nossas gotinhas dessa enxurrada, criamos um site especial com o foco de sanar dúvidas frequentes de forma simples e prática. Essa metodologia traz a praticidade que vocês merecem.</p>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Sobre a Administração</h2>
+
+<div class="faq-item">
+<div class="faq-q">Quem compõe a administração do canal Chuva de Seguidores?</div>
+<div class="faq-a">
+<p>A equipe administrativa é composta por:</p>
+<p>@oceanzye<br>
+@zoldiczx<br>
+@suane​bulosa<br>
+@denz4i<br>
+@coresversos<br>
+@viezdama<br>
+@imperad0z<br>
+@lincaoss</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">A administração segue os membros de volta?</div>
+<div class="faq-a">
+<p>Sim. Caso o follow não ocorra automaticamente, o membro poderá solicitar via DM. Assim que a mensagem for visualizada, o retorno será realizado.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Como faço para ingressar na Família Chuvas como Administrador?</div>
+<div class="faq-a">
+<p>Sempre que houver disponibilidade de vaga para a equipe administrativa, será disponibilizado um formulário oficial para candidatura. Após análise criteriosa, será selecionado o candidato que melhor atender aos requisitos e ao perfil da função.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Quando serão abertas novas vagas na administração?</div>
+<div class="faq-a">
+<p>Atualmente, a equipe administrativa encontra-se completa. Não há previsão para abertura de novas vagas, porém qualquer atualização será comunicada oficialmente no canal.</p>
+</div>
+</div>
+
+</div>
+</section>
+<section>
+<div class="card">
+<h2>Parcerias e investimentos</h2>
+
+<div class="faq-item">
+<div class="faq-q">O canal realiza parcerias? Como funciona?</div>
+<div class="faq-a">
+<p>Atualmente, o Canal Chuva de Seguidores não realiza parcerias externas.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Para participar é necessário realizar algum pagamento?</div>
+<div class="faq-a">
+<p>Não. Todas as ações de follow e engajamento são totalmente gratuitas.</p>
+<p>A administração não aceita qualquer tipo de pagamento ou troca por divulgação. A única exigência é o cumprimento das regras de reciprocidade, incluindo seguir os @ divulgados e retribuir os seguidores recebidos.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Sobre o follow e os @</h2>
+
+<div class="faq-item">
+<div class="faq-q">Quantas vezes posso participar do follow?</div>
+<div class="faq-a">
+<p>O membro poderá participar de todas as edições de follow realizadas no canal, sejam elas no formato follow por @ ou follow de curtidas no feed, desde que esteja em conformidade com as regras estabelecidas.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Para qual administrador devo encaminhar meu @?</div>
+<div class="faq-a">
+<p>O @ deverá ser encaminhado ao administrador que estiver disponível no momento para recebimento. A administração sempre informará previamente no canal qual membro da equipe estará responsável pelo recebimento dos @.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Posso enviar outros @ além do meu?</div>
+<div class="faq-a">
+<p>Não. É permitido enviar apenas o próprio @ ou, quando autorizado, o perfil reserva/spam pessoal.</p>
+<p>Caso outra pessoa deseje participar, deverá estar presente no canal e encaminhar seu próprio @, além de cumprir integralmente todas as regras estabelecidas.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">É obrigatório reagir e enviar o @?</div>
+<div class="faq-a">
+<p>Sim. Após encaminhar seu @ ao administrador responsável, o membro deverá retornar ao canal, seguir todos os perfis divulgados e reagir com o emoji (✅) como confirmação. O acompanhamento deve ser realizado até o encerramento oficial do follow.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Todos os @ são divulgados, mesmo contas pequenas?</div>
+<div class="faq-a">
+<p>Sim. Todos os @ enviados corretamente e dentro das regras são divulgados. O objetivo do canal é impulsionar o crescimento de todos os membros, especialmente contas em desenvolvimento.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Quantas vezes devo enviar meu @ a cada follow?</div>
+<div class="faq-a">
+<p>O @ deverá ser enviado apenas uma única vez por edição de follow, sempre no momento solicitado pelo administrador responsável.</p>
+<p>O envio duplicado poderá ocasionar a perda da posição na lista e, em casos recorrentes, medidas disciplinares por parte da administração.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Qual a diferença entre follow de @ e follow de curtidas?</div>
+<div class="faq-a">
+<p>Follow de @: dinâmica em que o perfil do participante é divulgado diretamente no canal para que os membros realizem o follow mútuo.</p>
+<p>Follow de curtidas: dinâmica realizada por meio de uma publicação oficial no feed, onde os participantes devem curtir o post e seguir todos os perfis que também interagirem com ele.</p>
+<p>Em ambas as modalidades, é obrigatório retribuir o follow recebido.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Regras e como funciona o canal</h2>
+
+<div class="faq-item">
+<div class="faq-q">Como funciona o canal?</div>
+<div class="faq-a">
+<p>No dia do follow, o administrador responsável solicitará o envio dos @ via mensagem direta (DM). Após o recebimento, os perfis serão divulgados no canal para que os membros realizem o follow mútuo.</p>
+<p>Todos os participantes devem seguir os @ divulgados, garantindo reciprocidade e equidade no crescimento das contas.</p>
+<p>Em caso de bloqueio (block), o membro deverá comunicar a administração para que seu @ seja incluído no grupo interno de suporte.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Quais são as regras oficiais do follow?</div>
+<div class="faq-a">
+<p>1️⃣ O @ deve ser enviado somente quando solicitado pelo administrador responsável.</p>
+<p>2️⃣ É obrigatório seguir todos os @ divulgados no canal.</p>
+<p>3️⃣ É obrigatório retribuir todos os seguidores. O descumprimento poderá resultar na divulgação do @ para perda de seguidores.</p>
+<p>4️⃣ O @ deve ser enviado apenas uma vez. Envios duplicados poderão causar desclassificação da lista.</p>
+<p>5️⃣ É obrigatório manter respeito e cordialidade com toda a equipe administrativa e membros.</p>
+<p>6️⃣ Após concluir o processo de seguir todos os @, o membro deverá reagir com (✅) como confirmação.</p>
+<p>‼️ Observação Importante: O descumprimento de qualquer regra implicará na não divulgação do @. Caso haja divulgação indevida, o perfil será removido e poderá ser exposto para que os seguidores deixem de seguir.</p>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="card">
+<h2>Sobre o bloqueio temporário</h2>
+
+<div class="faq-item">
+<div class="faq-q">Estou temporariamente restrito(a) para seguir perfis. O que devo fazer?</div>
+<div class="faq-a">
+<p>O membro deverá enviar seu @ acompanhado de uma mensagem informando que está temporariamente bloqueado(a) para seguir. Dessa forma, o perfil será direcionado ao canal interno de avisos, evitando qualquer acusação de descumprimento da regra de reciprocidade.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Acusação de unfollow</h2>
+
+<div class="faq-item">
+<div class="faq-q">Desejo realizar uma acusação de conta off ou rpg que não segue de volta. Como proceder?</div>
+<div class="faq-a">
+<p>O membro deverá entrar em contato com qualquer administrador e encaminhar o perfil da conta em questão para análise.</p>
+<p>Ressaltamos que contas consideradas “off” não são divulgadas oficialmente. Caso identifique algum perfil suspeito ou que não esteja cumprindo as regras, a administração avaliará a situação e tomará as medidas cabíveis.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Sobre os CDS</h2>
+
+<div class="faq-item">
+<div class="faq-q">Quais são os canais oficiais do CDS?</div>
+<div class="faq-a">
+<p>Para garantir segurança e autenticidade, os links oficiais são disponibilizados exclusivamente pela administração. O membro deverá solicitar diretamente à equipe para receber acesso ao grupo de busca, follow e central de avisos.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">O canal possui outros projetos ou grupos vinculados?</div>
+<div class="faq-a">
+<p>Sim. Para obter informações sobre outros projetos ou canais vinculados, o membro deverá entrar em contato diretamente com a administração.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Não seguiu de volta</h2>
+
+<div class="faq-item">
+<div class="faq-q">Se alguém não me seguir de volta, o que devo fazer?</div>
+<div class="faq-a">
+<p>O membro deverá aguardar o prazo de até 7 (sete) dias para que o follow seja retribuído, considerando o tempo necessário para visualização e organização por parte dos participantes.</p>
+<p>Caso, após esse período, o follow não seja devolvido, o membro poderá deixar de seguir o perfil e comunicar oficialmente à administração, enviando os @ correspondentes para que as devidas providências sejam tomadas.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Como posso verificar quem não me segue de volta?</div>
+<div class="faq-a">
+<p>O membro poderá utilizar ferramentas auxiliares disponíveis no mercado, como navegadores compatíveis com extensões específicas. Atualmente, alguns participantes utilizam o navegador Orion (iOS) ou Kiwi Browser (Android), conforme orientações disponíveis publicamente.</p>
+<p>A administração não se responsabiliza por aplicativos ou ferramentas de terceiros, sendo o uso de inteira responsabilidade do membro.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Sobre a TAG</h2>
+
+<div class="faq-item">
+<div class="faq-q">O que é a TAG para ganhar curtidas?</div>
+<div class="faq-a">
+<p>A TAG de curtidas é uma ação estratégica de engajamento promovida pela administração.</p>
+<p>Funcionamento oficial:</p>
+<p>1️⃣ O administrador divulgará a hashtag oficial do dia.</p>
+<p>2️⃣ O participante deverá inserir a hashtag na legenda de uma publicação no Instagram.</p>
+<p>3️⃣ Após a publicação, deverá acessar a hashtag na aba “Recentes”.</p>
+<p>4️⃣ O participante deverá curtir todas as publicações vinculadas à mesma hashtag.</p>
+<p>⚠️ O não cumprimento integral das etapas poderá resultar na não divulgação no próximo follow.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Como funciona a TAG de curtidas?</div>
+<div class="faq-a">
+<p>No horário previamente informado, será enviada uma hashtag oficial no grupo.</p>
+<p>O participante deverá:</p>
+<p>- Inserir a hashtag na legenda de uma publicação;</p>
+<p>- Acessar a hashtag;</p>
+<p>- Curtir todas as publicações disponíveis na aba “Recentes”.</p>
+<p>‼️ A participação só será válida mediante o cumprimento completo das etapas.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">O que é o follow de curtidas em post? É diferente da TAG de curtidas?</div>
+<div class="faq-a">
+<p>Sim, são dinâmicas distintas.</p>
+<p>A TAG de curtidas é uma ação voltada exclusivamente ao aumento de curtidas em publicações específicas, por meio do uso de uma hashtag oficial divulgada pela administração.</p>
+<p>Já o follow de curtidas no post consiste na liberação de uma publicação oficial no feed, na qual os membros devem curtir e seguir todos os perfis que interagirem com o post.</p>
+<p>É obrigatório seguir de volta todos que retribuírem. O descumprimento poderá resultar na perda dos seguidores conquistados e em medidas administrativas.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Posso encaminhar a TAG para alguém que não está no canal?</div>
+<div class="faq-a">
+<p>Não. É expressamente proibido encaminhar as TAGs (#) para terceiros que não façam parte do canal.</p>
+<p>A participação nas dinâmicas é exclusiva para membros ativos. Caso seja identificado o compartilhamento indevido, a administração entrará em contato via DM para apuração do ocorrido e aplicação das medidas cabíveis.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Na TAG de curtidas, posso utilizar a hashtag (#) em mais de uma publicação?</div>
+<div class="faq-a">
+<p>Sim. A hashtag poderá ser inserida em quantas publicações o participante desejar, desde que esteja devidamente ativo no canal e cumpra integralmente a regra de curtir todas as publicações vinculadas à respectiva TAG.</p>
+<p>O descumprimento dessa obrigação poderá resultar em medidas administrativas.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="card">
+<h2>Feedbacks</h2>
+<div class="gallery">
+<img src="feedback%201.jpeg" alt="Feedback 1">
+<img src="feedback%202.jpeg" alt="Feedback 2">
+<img src="feedback%203.jpeg" alt="Feedback 3">
+<img src="feedback%204.jpeg" alt="Feedback 4">
+<img src="feedback%205.jpeg" alt="Feedback 5">
+<img src="feedback%206.jpeg" alt="Feedback 6">
+<img src="feedback%207.jpeg" alt="Feedback 7">
+<img src="feedback%208.jpeg" alt="Feedback 8">
+<img src="feedback%209.jpeg" alt="Feedback 9">
+</div>
+</div>
+</section>
+
+<footer>© 2026 — Chuva de Seguidores</footer>
+
+<div id="lightbox">
+<img src="" alt="Visualização">
+</div>
+
+<button class="toggle-sound" onclick="toggleRain()" id="soundBtn">🔊 Ativar Som</button>
+
+<audio id="rainSound" loop preload="auto">
+<source src="som de chuva.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// chuva
+const rainContainer=document.getElementById("rain");
+for(let i=0;i<160;i++){
+ const d=document.createElement("div");
+ d.className="drop";
+ d.style.left=Math.random()*100+"vw";
+ d.style.animationDuration=(0.6+Math.random())+"s";
+ d.style.opacity=Math.random();
+ rainContainer.appendChild(d);
+}
+
+// som
+const audio=document.getElementById("rainSound");
+const btn=document.getElementById("soundBtn");
+
+function toggleRain(){
+ if(audio.paused){
+  audio.play();
+  btn.textContent="🔇 Desativar Som";
+ }else{
+  audio.pause();
+  btn.textContent="🔊 Ativar Som";
+ }
+}
+
+// FAQ
+document.querySelectorAll(".faq-q").forEach(q=>{
+ q.onclick=()=>q.parentElement.classList.toggle("active");
+});
+
+// animação scroll
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+  if(e.isIntersecting) e.target.classList.add("show")
+ })
+},{threshold:.2});
+
+document.querySelectorAll(".card").forEach(el=>observer.observe(el));
+
+// relâmpago aleatório
+const flash=document.getElementById("flash");
+setInterval(()=>{
+ if(Math.random()<0.15){
+  flash.style.opacity="0.8";
+  setTimeout(()=>flash.style.opacity="0",120);
+ }
+},4000);
+
+// LIGHTBOX
+const lightbox=document.getElementById("lightbox");
+const lbImage=lightbox.querySelector("img");
+document.querySelectorAll(".gallery img").forEach(img=>{
+ img.onclick=()=>{
+   lbImage.src=img.src;
+   lightbox.style.display="flex";
+ }
+});
+
+lightbox.onclick=()=>{
+ lightbox.style.display="none";
+ lbImage.src="";
+};
+</script>
+
+</body>
+</html>
