@@ -224,6 +224,25 @@ h2{color:#8ed0ff;margin-top:0}
 #chuvinhas-input input{flex:1;padding:8px;border:none;background:transparent;color:white;outline:none;}
 #chuvinhas-input button{background:#1e88e5;border:none;color:white;padding:8px 12px;cursor:pointer;}
 #chuvinhas-input button:hover{background:#42a5f5}
+
+/* ===== BOTÃO DE FEEDBACK ===== */
+.feedback-btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:14px 30px;
+  border-radius:40px;
+  background:linear-gradient(45deg,#6ec6ff,#1e88e5);
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  box-shadow:0 0 15px #64b5f6;
+  transition:.3s;
+}
+.feedback-btn:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 25px #8ed0ff;
+}
+
 footer{text-align:center;padding:40px;opacity:.6;position:relative;z-index:2;}
 </style>
 </head>
@@ -543,6 +562,22 @@ footer{text-align:center;padding:40px;opacity:.6;position:relative;z-index:2;}
 </div>
 </section>
 
+<!-- ===== NOVA SEÇÃO DE FEEDBACK ===== -->
+<section>
+<div class="card">
+<h2>Enviar Feedback</h2>
+<p>
+Se você tiver sugestões, críticas ou ideias para melhorar o canal
+Chuva de Seguidores, envie seu feedback para a administração.
+</p>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLScMM9eQOQ-Tu1xDK4N8ifcouM2DD2jH-JTEPrflo3yZyZnU8A/viewform"
+target="_blank"
+class="feedback-btn">
+Enviar Feedback
+</a>
+</div>
+</section>
+
 <footer>© 2026 — Chuva de Seguidores</footer>
 
 <!-- LIGHTBOX -->
@@ -694,88 +729,66 @@ const respostas = {
   ],
   participar: [
     "Para participar:\n1️⃣ Entre no canal\n2️⃣ Aguarde o follow abrir\n3️⃣ Envie seu @\n4️⃣ Siga todos os perfis divulgados.",
-    "Qualquer pessoa pode participar dos follows do CDS.",
-    "Para entrar basta entrar no canal e participar dos follows do dia."
+    "Qualquer dúvida sobre participar, clique no botão do canal e siga as instruções."
   ],
   regras: [
-    "As regras principais são:\n• Respeitar todos os membros\n• Enviar apenas seu próprio @\n• Seguir todos os perfis divulgados\n• Evitar spam",
-    "No CDS pedimos respeito e participação correta nos follows.",
-    "Todos devem seguir os perfis divulgados para manter o crescimento coletivo."
+    "Regras do CDS:\n- Não usar bots\n- Seguir todos os perfis corretamente\n- Não compartilhar perfis de terceiros sem permissão",
+    "Siga as regras para não ser removido do canal."
   ],
   follow: [
-    "No follow de @ você envia seu arroba quando o follow abrir e segue todos os perfis divulgados.",
-    "O follow funciona assim: você envia seu @ e segue todos que participaram.",
-    "O objetivo do follow é crescimento mútuo."
+    "O follow coletivo funciona assim: todos enviam seu @, você segue todos os perfis divulgados e confirma.",
+    "Sempre siga todos os perfis no follow, senão não poderá participar do próximo."
   ],
   naoSeguiu: [
-    "Se alguém não seguir de volta, você pode avisar um administrador.",
-    "Perfis que não seguem de volta podem ser denunciados para a administração.",
-    "Caso alguém não siga, informe um ADM."
+    "Se alguém não seguiu de volta, você pode avisar nos próximos follows ou bloqueá-lo.",
+    "Não se preocupe, siga as regras e participe do próximo follow."
   ],
   bloqueio: [
-    "Se o Instagram limitar seus follows, espere algumas horas antes de seguir novamente.",
-    "Bloqueios temporários são normais. Aguarde um tempo."
+    "Se você não consegue seguir alguém, aguarde algumas horas ou tente novamente mais tarde. Pode ser bloqueio temporário do Instagram.",
+    "Evite seguir/deixar de seguir rapidamente para não ser bloqueado."
   ],
   tag: [
-    "A TAG de curtidas serve para aumentar o engajamento das publicações.",
-    "Na TAG de curtidas os membros curtem as postagens uns dos outros."
+    "As tags servem para aumentar curtidas e alcance das postagens.\nUse sempre as tags do canal.",
+    "Não use tags proibidas ou fora do canal."
   ],
   adm: [
-    "Se precisar falar com a administração, procure um ADM no canal.",
-    "A equipe de administração pode ajudar em qualquer problema."
+    "Para falar com a administração, envie uma DM no Instagram ou clique no botão do canal.",
+    "Os administradores estão disponíveis para dúvidas e suporte."
   ]
 };
 
-// ===== FUNÇÃO DO BOT =====
+// ===== FUNÇÃO DE RESPOSTA =====
 function chuvinhasResponder(){
-  const pergunta = inputChuvinhas.value.trim();
+  const pergunta = inputChuvinhas.value.trim().toLowerCase();
   if(!pergunta) return;
-
-  // mensagem do usuário
-  const userMsg = document.createElement("p");
-  userMsg.className = "user";
-  userMsg.textContent = pergunta;
-  chat.appendChild(userMsg);
-  inputChuvinhas.value = "";
-  chat.scrollTop = chat.scrollHeight;
-
-  // digitando
-  const typing = document.createElement("p");
-  typing.className = "bot";
-  typing.textContent = "Chuvinhas está digitando... ☔";
-  chat.appendChild(typing);
-  chat.scrollTop = chat.scrollHeight;
-
-  setTimeout(() => {
-    typing.remove();
-    const texto = pergunta.toLowerCase();
-    let resposta = "Hmm... ainda não sei responder isso ☔";
-
-    // checar categoria
-    for(let categoria in chuvinhasBase){
-      if(chuvinhasBase[categoria].some(p => texto.includes(p))){
-        const r = respostas[categoria] || [resposta];
-        resposta = r[Math.floor(Math.random()*r.length)];
+  
+  // Adiciona a pergunta do usuário
+  const pUser = document.createElement("p");
+  pUser.className = "user";
+  pUser.textContent = pergunta;
+  chat.appendChild(pUser);
+  
+  // Processa a resposta
+  let resposta = "Desculpe, não entendi sua pergunta ☔. Tente simplificar ou use palavras-chave.";
+  for(let key in chuvinhasBase){
+    for(let q of chuvinhasBase[key]){
+      if(pergunta.includes(q)){
+        const options = respostas[key];
+        resposta = options[Math.floor(Math.random()*options.length)];
         break;
       }
     }
-
-    // enviar resposta
-    const botMsg = document.createElement("p");
-    botMsg.className = "bot";
-    botMsg.textContent = resposta;
-    chat.appendChild(botMsg);
-    chat.scrollTop = chat.scrollHeight;
-
-    // fechar chat se for despedida
-    if(chuvinhasBase.tchau.some(d => texto.includes(d))){
-      setTimeout(() => {
-        bot.style.display = "none";
-        mascote.classList.add("pulse");
-      }, 1000); // espera 1s antes de fechar
-    }
-
-  }, 900);
+  }
+  
+  // Adiciona a resposta do bot
+  const pBot = document.createElement("p");
+  pBot.className = "bot";
+  pBot.textContent = resposta;
+  chat.appendChild(pBot);
+  
+  // Scroll automático
+  chat.scrollTop = chat.scrollHeight;
+  inputChuvinhas.value = "";
 }
 </script>
 
