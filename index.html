@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
@@ -14,6 +14,7 @@ body{
   overflow-x:hidden;
 }
 
+/* ===== HEADER ===== */
 header{
   text-align:center;
   padding:90px 20px;
@@ -21,12 +22,10 @@ header{
   z-index:2;
   animation:fadeDown 1.2s ease;
 }
-
 @keyframes fadeDown{
   from{opacity:0;transform:translateY(-40px)}
   to{opacity:1;transform:translateY(0)}
 }
-
 h1{
   font-size:clamp(30px,6vw,60px);
   margin:0 auto;
@@ -34,9 +33,7 @@ h1{
   width:100%;
   text-shadow:0 0 20px #5bbcff;
 }
-
 .tag{opacity:.85;margin-top:10px;text-align:center;}
-
 .btn{
   margin-top:25px;
   display:inline-block;
@@ -51,9 +48,7 @@ h1{
   box-shadow:0 0 18px #4fc3f7;
   transition:.3s;
 }
-
 .btn:hover{transform:scale(1.06)}
-
 .btn::after{
   content:"";
   position:absolute;
@@ -65,13 +60,13 @@ h1{
   top:50%;left:50%;
   transition:.6s;
 }
-
 .btn:active::after{
   width:300px;
   height:300px;
   opacity:0;
 }
 
+/* ===== SECTIONS ===== */
 section{
   padding:60px 20px;
   max-width:1000px;
@@ -79,7 +74,6 @@ section{
   position:relative;
   z-index:2;
 }
-
 .card{
   background:rgba(255,255,255,0.07);
   border-radius:25px;
@@ -91,66 +85,35 @@ section{
   transform:translateY(40px);
   transition:1s;
 }
-
 .card.show{opacity:1;transform:translateY(0)}
-
 h2{color:#8ed0ff;margin-top:0}
 
+/* ===== FAQ ===== */
 .faq-item{margin:12px 0;border-bottom:1px solid rgba(255,255,255,.1)}
-
-.faq-q{
-  cursor:pointer;
-  padding:10px;
-  font-weight:bold;
-}
-
-.faq-a{
-  max-height:0;
-  overflow:hidden;
-  transition:.4s;
-  padding:0 0;
-  opacity:.8;
-}
-
+.faq-q{cursor:pointer;padding:10px;font-weight:bold;}
+.faq-a{max-height:0;overflow:hidden;transition:.4s;padding:0 10px;opacity:.8;}
 .faq-item.active .faq-a{
   max-height:500px;
-  padding:0;
+  padding:10px;
   overflow-y:auto;
 }
-
 .faq-a p{margin:5px 0;}
+.faq-a::-webkit-scrollbar{width:6px;}
+.faq-a::-webkit-scrollbar-thumb{background:#6ec6ff;border-radius:10px;}
 
-.faq-a::-webkit-scrollbar{
-  width:6px;
-}
-.faq-a::-webkit-scrollbar-thumb{
-  background:#6ec6ff;
-  border-radius:10px;
-}
-
+/* ===== GALLERY ===== */
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:15px;
 }
-
 .gallery img{
   width:100%;
   border-radius:15px;
   transition:.4s;
   cursor:pointer;
 }
-
 .gallery img:hover{transform:scale(1.07)}
-
-footer{
-  text-align:center;
-  padding:40px;
-  opacity:.6;
-  position:relative;
-  z-index:2;
-}
-
 #lightbox{
   position:fixed;
   top:0;
@@ -163,7 +126,6 @@ footer{
   align-items:center;
   z-index:10;
 }
-
 #lightbox img{
   max-width:90%;
   max-height:90%;
@@ -171,12 +133,9 @@ footer{
   box-shadow:0 0 20px #000;
   animation:fadeIn 0.3s ease;
 }
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-
+/* ===== RAIN ===== */
 .rain{
   position:fixed;
   width:100%;
@@ -186,7 +145,6 @@ footer{
   pointer-events:none;
   z-index:1;
 }
-
 .drop{
   position:absolute;
   bottom:100%;
@@ -195,9 +153,7 @@ footer{
   background:rgba(255,255,255,0.5);
   animation:fall linear infinite;
 }
-
 @keyframes fall{to{transform:translateY(120vh)}}
-
 .flash{
   position:fixed;
   inset:0;
@@ -207,6 +163,7 @@ footer{
   z-index:5;
 }
 
+/* ===== BOTÃO DE SOM ===== */
 .toggle-sound{
   position:fixed;
   bottom:20px;
@@ -221,8 +178,53 @@ footer{
   font-weight:bold;
   box-shadow:0 0 15px #64b5f6;
 }
-
 .toggle-sound:hover{transform:scale(1.08)}
+
+/* ===== MASCOTE ===== */
+#chuvinhasMascote{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  z-index:60;
+  cursor:pointer;
+}
+#chuvinhasMascote.pulse {animation: pulse 1.5s infinite;}
+@keyframes pulse {0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-5px) scale(1.05);}}
+.gota{width:75px;height:75px;background:linear-gradient(180deg,#6ec6ff,#1e88e5);border-radius:50% 50% 65% 65%;position:relative;animation:flutuar 2.5s ease-in-out infinite;box-shadow:0 0 25px #64b5f6;}
+@keyframes flutuar{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+.rosto{position:absolute;top:25px;width:100%;text-align:center;}
+.olhos{display:flex;justify-content:center;gap:10px;}
+.olho{width:9px;height:9px;background:#06152b;border-radius:50%;animation:piscando 4s infinite;}
+@keyframes piscando{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(0.1)}}
+.boca{width:16px;height:8px;background:#06152b;border-radius:0 0 12px 12px;margin:5px auto 0;}
+
+/* ===== CHAT CHUVINHAS ===== */
+#chuvinhas-bot{
+  display:none;
+  position:fixed;
+  bottom:100px;
+  left:20px;
+  width:320px;
+  max-width:90vw;
+  background:rgba(13,45,99,0.9);
+  border-radius:20px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 25px rgba(94,197,255,0.5);
+  z-index:50;
+  overflow:hidden;
+  flex-direction:column;
+}
+#chuvinhas-header{background:linear-gradient(45deg,#6ec6ff,#1e88e5);padding:12px;font-weight:bold;text-align:center;}
+#chuvinhas-chat{height:220px;overflow-y:auto;padding:10px;font-size:14px;display:flex;flex-direction:column;gap:8px;}
+.bot{align-self:flex-start;background:rgba(94,197,255,0.3);color:#fff;padding:10px 14px;border-radius:12px 12px 12px 3px;max-width:80%;white-space:pre-line;}
+.bot::before{content:"Chuvinhas:";font-weight:bold;display:block;margin-bottom:4px;}
+.user{align-self:flex-end;background:rgba(30,136,229,0.8);color:white;padding:10px 14px;border-radius:12px 12px 3px 12px;max-width:80%;white-space:pre-line;}
+.user::before{content:"Você:";font-weight:bold;display:block;margin-bottom:4px;}
+#chuvinhas-input{display:flex;border-top:1px solid rgba(255,255,255,0.1);}
+#chuvinhas-input input{flex:1;padding:8px;border:none;background:transparent;color:white;outline:none;}
+#chuvinhas-input button{background:#1e88e5;border:none;color:white;padding:8px 12px;cursor:pointer;}
+#chuvinhas-input button:hover{background:#42a5f5}
+footer{text-align:center;padding:40px;opacity:.6;position:relative;z-index:2;}
 </style>
 </head>
 
@@ -234,9 +236,7 @@ footer{
 <header>
 <h1>☔ Chuva de Seguidores ☔</h1>
 <p class="tag">Transformamos seu perfil em referência, com crescimento acelerado e engajamento de verdade.</p>
-<a href="https://www.instagram.com/channel/AbbXOg5qu_FnroUY/?igsh=MWlrMWd1Z25ubWl4MQ==" target="_blank" class="btn">
-Entrar no Canal
-</a>
+<a href="https://www.instagram.com/channel/AbbXOg5qu_FnroUY/?igsh=MWlrMWd1Z25ubWl4MQ==" target="_blank" class="btn">Entrar no Canal</a>
 </header>
 
 <section>
@@ -260,8 +260,7 @@ Entrar no Canal
 <div class="faq-q">Quem compõe a administração do canal Chuva de Seguidores?</div>
 <div class="faq-a">
 <p>A equipe administrativa é composta por:</p>
-<p>@oceanzye<br>
-@zoldiczx<br>
+<p>@uncvrry<br>
 @suane​bulosa<br>
 @denz4i<br>
 @coresversos<br>
@@ -546,79 +545,238 @@ Entrar no Canal
 
 <footer>© 2026 — Chuva de Seguidores</footer>
 
+<!-- LIGHTBOX -->
 <div id="lightbox">
 <img src="" alt="Visualização">
 </div>
 
+<!-- SOM -->
 <button class="toggle-sound" onclick="toggleRain()" id="soundBtn">🔊 Ativar Som</button>
-
 <audio id="rainSound" loop preload="auto">
 <source src="som de chuva.mp3" type="audio/mpeg">
 </audio>
 
+<!-- MASCOTE -->
+<div id="chuvinhasMascote">
+<div class="gota">
+<div class="rosto">
+<div class="olhos">
+<div class="olho"></div>
+<div class="olho"></div>
+</div>
+<div class="boca"></div>
+</div>
+</div>
+</div>
+
+<!-- CHAT -->
+<div id="chuvinhas-bot">
+<div id="chuvinhas-header">☔ Chuvinhas</div>
+<div id="chuvinhas-chat"></div>
+<div id="chuvinhas-input">
+<input type="text" id="chuvinhasPergunta" placeholder="Pergunte algo sobre o CDS...">
+<button onclick="chuvinhasResponder()">Enviar</button>
+</div>
+</div>
+
 <script>
-// chuva
-const rainContainer=document.getElementById("rain");
-for(let i=0;i<160;i++){
- const d=document.createElement("div");
- d.className="drop";
- d.style.left=Math.random()*100+"vw";
- d.style.animationDuration=(0.6+Math.random())+"s";
- d.style.opacity=Math.random();
- rainContainer.appendChild(d);
+// ===== CHUVA =====
+const rainContainer = document.getElementById("rain");
+for (let i = 0; i < 160; i++) {
+  const d = document.createElement("div");
+  d.className = "drop";
+  d.style.left = Math.random() * 100 + "vw";
+  d.style.animationDuration = (0.6 + Math.random()) + "s";
+  d.style.opacity = Math.random();
+  rainContainer.appendChild(d);
 }
 
-// som
-const audio=document.getElementById("rainSound");
-const btn=document.getElementById("soundBtn");
-
-function toggleRain(){
- if(audio.paused){
-  audio.play();
-  btn.textContent="🔇 Desativar Som";
- }else{
-  audio.pause();
-  btn.textContent="🔊 Ativar Som";
- }
+// ===== SOM =====
+const audio = document.getElementById("rainSound");
+const btn = document.getElementById("soundBtn");
+function toggleRain() {
+  if (audio.paused) { audio.play(); btn.textContent = "🔇 Desativar Som"; }
+  else { audio.pause(); btn.textContent = "🔊 Ativar Som"; }
 }
 
-// FAQ
-document.querySelectorAll(".faq-q").forEach(q=>{
- q.onclick=()=>q.parentElement.classList.toggle("active");
+// ===== FAQ =====
+document.querySelectorAll(".faq-q").forEach(q => {
+  q.onclick = () => q.parentElement.classList.toggle("active");
 });
 
-// animação scroll
-const observer=new IntersectionObserver(entries=>{
- entries.forEach(e=>{
-  if(e.isIntersecting) e.target.classList.add("show")
- })
-},{threshold:.2});
+// ===== SCROLL ANIMAÇÃO =====
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("show") });
+}, { threshold: 0.2 });
+document.querySelectorAll(".card").forEach(el => observer.observe(el));
 
-document.querySelectorAll(".card").forEach(el=>observer.observe(el));
+// ===== FLASH =====
+const flash = document.getElementById("flash");
+setInterval(() => {
+  if (Math.random() < 0.15) {
+    flash.style.opacity = "0.8";
+    setTimeout(() => flash.style.opacity = "0", 120);
+  }
+}, 4000);
 
-// relâmpago aleatório
-const flash=document.getElementById("flash");
-setInterval(()=>{
- if(Math.random()<0.15){
-  flash.style.opacity="0.8";
-  setTimeout(()=>flash.style.opacity="0",120);
- }
-},4000);
-
-// LIGHTBOX
-const lightbox=document.getElementById("lightbox");
-const lbImage=lightbox.querySelector("img");
-document.querySelectorAll(".gallery img").forEach(img=>{
- img.onclick=()=>{
-   lbImage.src=img.src;
-   lightbox.style.display="flex";
- }
+// ===== LIGHTBOX =====
+const lightbox = document.getElementById("lightbox");
+const lbImage = lightbox.querySelector("img");
+document.querySelectorAll(".gallery img").forEach(img => {
+  img.onclick = () => {
+    lbImage.src = img.src;
+    lightbox.style.display = "flex";
+  }
 });
+lightbox.onclick = () => { lightbox.style.display = "none"; lbImage.src = ""; };
 
-lightbox.onclick=()=>{
- lightbox.style.display="none";
- lbImage.src="";
+// ===== MASCOTE =====
+const mascote = document.getElementById("chuvinhasMascote");
+const bot = document.getElementById("chuvinhas-bot");
+const chat = document.getElementById("chuvinhas-chat");
+const inputChuvinhas = document.getElementById("chuvinhasPergunta");
+
+window.onload = () => {
+  bot.style.display = "none";
+  mascote.classList.add("pulse");
 };
+
+mascote.onclick = () => {
+  if (bot.style.display === "none") {
+    bot.style.display = "flex";
+    mascote.classList.remove("pulse");
+
+    if (chat.children.length === 0) {
+      const inicial = "Olá! ☔\nEu sou o Chuvinhas, mascote do CDS.\nPosso te ajudar com dúvidas sobre regras, follow, TAG ou administração";
+      const p = document.createElement("p");
+      p.className = "bot";
+      p.textContent = inicial;
+      chat.appendChild(p);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+  } else {
+    bot.style.display = "none";
+    mascote.classList.add("pulse");
+  }
+};
+
+// ===== ENVIAR COM ENTER =====
+inputChuvinhas.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){ e.preventDefault(); chuvinhasResponder(); }
+});
+
+// ===== BASE DE PERGUNTAS =====
+const chuvinhasBase = {
+  saudacao: ["oi","olá","ola","hello","bom dia","boa tarde","boa noite"],
+  tchau: ["tchau","até","vlw","valeu"],
+  canal: ["como funciona o canal","o que é o canal","como funciona cds","explica o canal","cds significa"],
+  participar: ["como participar","como faço para participar","como entrar","quero entrar","participar do follow","participar do canal"],
+  regras: ["regras","quais são as regras","qual a regra","regras do canal","o que pode","o que não pode"],
+  follow: ["follow","como funciona o follow","follow de @","follow de arroba","troca de follow","como participar do follow"],
+  naoSeguiu: ["nao seguiu","não seguiu","não seguiu de volta","nao seguiu de volta","nao me seguiu","unfollow"],
+  bloqueio: ["bloqueio","bloqueado","limitado para seguir","instagram bloqueou","não consigo seguir"],
+  tag: ["tag","tag de curtidas","hashtag","tag cds"],
+  adm: ["adm","admin","administração","administrador","falar com adm","para quem envio meu @"]
+};
+
+// ===== RESPOSTAS =====
+const respostas = {
+  saudacao: [
+    "Olá! ☔ Eu sou o Chuvinhas, mascote do CDS.\nPosso ajudar com dúvidas sobre regras, follow, TAG ou participação.",
+    "Oi! ☔ Bem-vindo ao canal Chuva de Seguidores!",
+    "Olá! 💙 Quer ajuda com o canal?"
+  ],
+  tchau: ["Tchau! ☔ Espero ter ajudado!"],
+  canal: [
+    "O canal Chuva de Seguidores ajuda perfis de RPG a crescerem com seguidores reais e ativos.\nTodos participam de follows coletivos onde todos seguem todos.",
+    "O CDS funciona com dinâmicas de engajamento onde os membros enviam seus @ e seguem todos os perfis divulgados."
+  ],
+  participar: [
+    "Para participar:\n1️⃣ Entre no canal\n2️⃣ Aguarde o follow abrir\n3️⃣ Envie seu @\n4️⃣ Siga todos os perfis divulgados.",
+    "Qualquer pessoa pode participar dos follows do CDS.",
+    "Para entrar basta entrar no canal e participar dos follows do dia."
+  ],
+  regras: [
+    "As regras principais são:\n• Respeitar todos os membros\n• Enviar apenas seu próprio @\n• Seguir todos os perfis divulgados\n• Evitar spam",
+    "No CDS pedimos respeito e participação correta nos follows.",
+    "Todos devem seguir os perfis divulgados para manter o crescimento coletivo."
+  ],
+  follow: [
+    "No follow de @ você envia seu arroba quando o follow abrir e segue todos os perfis divulgados.",
+    "O follow funciona assim: você envia seu @ e segue todos que participaram.",
+    "O objetivo do follow é crescimento mútuo."
+  ],
+  naoSeguiu: [
+    "Se alguém não seguir de volta, você pode avisar um administrador.",
+    "Perfis que não seguem de volta podem ser denunciados para a administração.",
+    "Caso alguém não siga, informe um ADM."
+  ],
+  bloqueio: [
+    "Se o Instagram limitar seus follows, espere algumas horas antes de seguir novamente.",
+    "Bloqueios temporários são normais. Aguarde um tempo."
+  ],
+  tag: [
+    "A TAG de curtidas serve para aumentar o engajamento das publicações.",
+    "Na TAG de curtidas os membros curtem as postagens uns dos outros."
+  ],
+  adm: [
+    "Se precisar falar com a administração, procure um ADM no canal.",
+    "A equipe de administração pode ajudar em qualquer problema."
+  ]
+};
+
+// ===== FUNÇÃO DO BOT =====
+function chuvinhasResponder(){
+  const pergunta = inputChuvinhas.value.trim();
+  if(!pergunta) return;
+
+  // mensagem do usuário
+  const userMsg = document.createElement("p");
+  userMsg.className = "user";
+  userMsg.textContent = pergunta;
+  chat.appendChild(userMsg);
+  inputChuvinhas.value = "";
+  chat.scrollTop = chat.scrollHeight;
+
+  // digitando
+  const typing = document.createElement("p");
+  typing.className = "bot";
+  typing.textContent = "Chuvinhas está digitando... ☔";
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    typing.remove();
+    const texto = pergunta.toLowerCase();
+    let resposta = "Hmm... ainda não sei responder isso ☔";
+
+    // checar categoria
+    for(let categoria in chuvinhasBase){
+      if(chuvinhasBase[categoria].some(p => texto.includes(p))){
+        const r = respostas[categoria] || [resposta];
+        resposta = r[Math.floor(Math.random()*r.length)];
+        break;
+      }
+    }
+
+    // enviar resposta
+    const botMsg = document.createElement("p");
+    botMsg.className = "bot";
+    botMsg.textContent = resposta;
+    chat.appendChild(botMsg);
+    chat.scrollTop = chat.scrollHeight;
+
+    // fechar chat se for despedida
+    if(chuvinhasBase.tchau.some(d => texto.includes(d))){
+      setTimeout(() => {
+        bot.style.display = "none";
+        mascote.classList.add("pulse");
+      }, 1000); // espera 1s antes de fechar
+    }
+
+  }, 900);
+}
 </script>
 
 </body>
